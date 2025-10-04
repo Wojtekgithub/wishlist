@@ -1,5 +1,51 @@
-<div class="container">
-  <div *ngFor="let item of items">
-    <input type="checkbox" name="" id="" /> {{ item.wishText }}
+<div class="container my-4">
+  <h1 class="text-primary">My Wishlist App</h1>
+  <div class="mb-3">
+    <input
+      [(ngModel)]="newWishText"
+      name="wishtext"
+      type="text"
+      class="form-control"
+      placeholder="Wpisz życzenie..."
+    />
   </div>
+  <button
+    (click)="$event.preventDefault(); addnewwish()"
+    class="btn btn-success"
+  >
+    Dodaj
+  </button>
+
+  <div>
+    <select
+      (ngModelChange)="filterChanged($event)"
+      [(ngModel)]="listFilter"
+      name="select"
+      id=""
+    >
+      <option value="0">all</option>
+      <option value="1">unfulfilled</option>
+      <option value="2">fulfilled</option>
+    </select>
+  </div>
+
+  <div *ngIf="visibleItems.length == 0; then noItems; else showItems"></div>
+
+  <ng-template #noItems> There are no wishes </ng-template>
+
+  <ng-template #showItems>
+    <div class="container">
+      <div *ngFor="let item of visibleItems; index as ii">
+        <input
+          type="checkbox"
+          name=""
+          id=""
+          [checked]="item.isComplete"
+          [attr.data-index]="ii"
+          (click)="toogleItem(item)"
+        />
+        {{ item.wishText }}
+      </div>
+    </div>
+  </ng-template>
 </div>
